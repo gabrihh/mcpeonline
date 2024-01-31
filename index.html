@@ -75,33 +75,42 @@
             document.getElementById('serverForm').style.display = 'flex';
         }
 
-        async function addServer() {
-            const serverName = document.getElementById('serverName').value;
-            const ip = document.getElementById('ip').value;
-            const port = document.getElementById('port').value;
-            const version = document.getElementById('version').value;
+        function addServer() {
+    alert("Botão OK pressionado");
 
-            // Adicione os dados ao Firestore
-            await db.collection('servidores').add({
-                nome: serverName,
-                ip: ip,
-                porta: port,
-                versao: version
-            });
+    const serverName = document.getElementById('serverName').value;
+    const ip = document.getElementById('ip').value;
+    const port = document.getElementById('port').value;
+    const version = document.getElementById('version').value;
 
-            // Atualize a lista de servidores
-            updateServerList();
+    alert("Dados do servidor:\nNome: " + serverName + "\nIP: " + ip + "\nPorta: " + port + "\nVersão: " + version);
 
-            // Limpa os campos do formulário
-            document.getElementById('serverName').value = '';
-            document.getElementById('ip').value = '';
-            document.getElementById('port').value = '';
-            document.getElementById('version').value = '';
+    // Adicione os dados ao Firestore
+    db.collection('servidores').add({
+        nome: serverName,
+        ip: ip,
+        porta: port,
+        versao: version
+    })
+    .then((docRef) => {
+        alert("Servidor adicionado com ID: " + docRef.id);
 
-            // Esconde o formulário após adicionar o servidor
-            document.getElementById('serverForm').style.display = 'none';
-        }
+        // Atualize a lista de servidores
+        updateServerList();
 
+        // Limpa os campos do formulário
+        document.getElementById('serverName').value = '';
+        document.getElementById('ip').value = '';
+        document.getElementById('port').value = '';
+        document.getElementById('version').value = '';
+
+        // Esconde o formulário após adicionar o servidor
+        document.getElementById('serverForm').style.display = 'none';
+    })
+    .catch((error) => {
+        alert("Erro ao adicionar servidor:\n" + error);
+    });
+    }
         function updateServerList() {
             const serverList = document.getElementById('serverList');
             serverList.innerHTML = ''; // Limpa a lista antes de atualizar
