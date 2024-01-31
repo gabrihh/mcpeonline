@@ -9,19 +9,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             flex-direction: column;
-        }
-
-        h1 {
-            font-size: 3em;
-        }
-
-        #serverForm {
-            display: none;
-            flex-direction: column;
-            align-items: center;
+            font-family: Arial, sans-serif;
         }
 
         input, button {
@@ -29,8 +20,10 @@
             padding: 5px;
         }
 
-        #serverList {
-            margin-top: 20px;
+        #serverForm {
+            display: none;
+            flex-direction: column;
+            align-items: center;
         }
     </style>
 </head>
@@ -62,7 +55,6 @@
         }
 
         function addServer() {
-            console.log("Botão OK pressionado");
             const serverName = document.getElementById('serverName').value;
             const port = document.getElementById('port').value;
             const version = document.getElementById('version').value;
