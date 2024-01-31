@@ -89,11 +89,11 @@
         console.log("Document written with ID: ", docRef.id);
         // Limpa o formulário
         clearForm();
-        // Atualiza a lista de servidores
-        updateServerList();
         // Volta para a primeira cena
         document.getElementById("configureBtn").style.display = "block";
         document.getElementById("questions").style.display = "none";
+        // Atualiza a lista de servidores
+        updateServerList();
       })
       .catch(function(error) {
         console.error("Error adding document: ", error);
