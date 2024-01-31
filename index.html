@@ -67,6 +67,8 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
+        const serverForm = document.getElementById('serverForm');
+
         const showServerForm = () => serverForm.style.display = 'flex';
 
         const addServer = async () => {
@@ -96,4 +98,4 @@
         window.onload = updateServerList;
     </script>
 </body>
-</html>
+    </html>
