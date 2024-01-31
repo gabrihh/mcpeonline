@@ -10,7 +10,9 @@
 </head>
 <body>
 
-<button id="joinButton">Join Chat</button>
+<div id="buttonsContainer">
+  <button id="joinButton" onclick="joinChat()">Join Chat</button>
+</div>
 
 <script>
   // Substitua estas configurações com as suas do Firebase
@@ -30,18 +32,25 @@
   // Obtenha uma referência para o banco de dados
   const database = firebase.database();
 
-  // Adicione um evento de clique ao botão
-  document.getElementById('joinButton').addEventListener('click', () => {
+  // Função chamada ao clicar no botão "Join Chat"
+  function joinChat() {
     // Gere uma chave única para a sala de chat
     const roomId = generateRoomId();
 
     // Adicione o usuário atual à sala de chat no banco de dados
     const userId = generateUserId();
-    database.ref(`rooms/${roomId}/users/${userId}`).set(true);
+    database.ref(`rooms/${roomId}/users/${userId}`).set(true)
+      .then(() => {
+        console.log(`Usuário adicionado à sala ${roomId}`);
+        alert(`Você entrou na sala ${roomId}`);
 
-    // Atualize a interface do usuário ou faça outras ações necessárias
-    alert(`Você entrou na sala ${roomId}`);
-  });
+        // Adicione o segundo botão após o clique no primeiro botão
+        document.getElementById('buttonsContainer').innerHTML = '<button>Second Button</button>';
+      })
+      .catch(error => {
+        console.error("Erro ao adicionar usuário à sala:", error);
+      });
+  }
 
   // Função para gerar uma chave de sala única
   function generateRoomId() {
