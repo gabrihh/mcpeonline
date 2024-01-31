@@ -13,11 +13,16 @@
       height: 100vh;
       margin: 0;
     }
+
+    button, input, label {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
 
-  <button onclick="showQuestions()">Configurar Servidor</button>
+  <button id="configureBtn" onclick="showQuestions()">Configurar Servidor</button>
 
   <div id="questions" style="display: none;">
     <label for="serverName">Nome do Servidor:</label>
@@ -37,6 +42,7 @@
 
   <script>
     function showQuestions() {
+      document.getElementById("configureBtn").style.display = "none";
       document.getElementById("questions").style.display = "block";
     }
 
