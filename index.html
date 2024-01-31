@@ -70,7 +70,6 @@
     function toggleForm() {
       const form = document.getElementById("questions");
       form.style.display = form.style.display === "none" ? "block" : "none";
-      updateServerList();
     }
 
     async function submitAnswers() {
@@ -85,6 +84,7 @@
 
       clearForm();
       toggleForm();
+      updateServerList();
     }
 
     function updateServerList() {
@@ -99,7 +99,10 @@
     }
 
     function clearForm() {
-      document.getElementById("questions").reset();
+      document.getElementById("serverName").value = "";
+      document.getElementById("serverIP").value = "";
+      document.getElementById("serverPort").value = "";
+      document.getElementById("serverVersion").value = "";
     }
 
     // Atualiza a lista de servidores ao carregar a página
