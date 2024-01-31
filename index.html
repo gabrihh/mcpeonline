@@ -81,27 +81,28 @@
         }
 
         async function addServer() {
-            const serverName = document.getElementById('serverName').value;
-            const port = document.getElementById('port').value;
-            const version = document.getElementById('version').value;
+    console.log("Botão OK pressionado"); // Adicione esta linha
+    const serverName = document.getElementById('serverName').value;
+    const port = document.getElementById('port').value;
+    const version = document.getElementById('version').value;
 
-            // Adicione os dados ao Firestore
-            await db.collection('servidores').add({
-                nome: serverName,
-                porta: port,
-                versao: version
-            });
+    // Adicione os dados ao Firestore
+    await db.collection('servidores').add({
+        nome: serverName,
+        porta: port,
+        versao: version
+    });
 
-            // Atualize a lista de servidores
-            updateServerList();
+    // Atualize a lista de servidores
+    updateServerList();
 
-            // Limpa os campos do formulário
-            document.getElementById('serverName').value = '';
-            document.getElementById('port').value = '';
-            document.getElementById('version').value = '';
+    // Limpa os campos do formulário
+    document.getElementById('serverName').value = '';
+    document.getElementById('port').value = '';
+    document.getElementById('version').value = '';
 
-            // Esconde o formulário após adicionar o servidor
-            document.getElementById('serverForm').style.display = 'none';
+    // Esconde o formulário após adicionar o servidor
+    document.getElementById('serverForm').style.display = 'none';
         }
 
         function updateServerList() {
