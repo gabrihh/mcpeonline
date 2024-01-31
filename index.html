@@ -30,7 +30,7 @@
 </head>
 <body>
 
-  <button id="configureBtn" onclick="showQuestions()">Configurar Servidor</button>
+  <button onclick="toggleForm()">Configurar Servidor</button>
 
   <div id="questions" style="display: none;">
     <label for="serverName">Nome do Servidor:</label>
@@ -67,52 +67,39 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    function showQuestions() {
-      document.getElementById("configureBtn").style.display = "none";
-      document.getElementById("questions").style.display = "block";
-    }
-
-    async function submitAnswers() {
-      var serverName = document.getElementById("serverName").value;
-      var serverIP = document.getElementById("serverIP").value;
-      var serverPort = document.getElementById("serverPort").value;
-      var serverVersion = document.getElementById("serverVersion").value;
-
-      // Adiciona as respostas ao Firestore
-      await db.collection("servers").add({
-        name: serverName,
-        ip: serverIP,
-        port: serverPort,
-        version: serverVersion
-      });
-
-      console.log("Document written");
-      // Limpa o formulário
-      clearForm();
-      // Volta para a primeira cena
-      document.getElementById("configureBtn").style.display = "block";
-      document.getElementById("questions").style.display = "none";
-      // Atualiza a lista de servidores
+    function toggleForm() {
+      const form = document.getElementById("questions");
+      form.style.display = form.style.display === "none" ? "block" : "none";
       updateServerList();
     }
 
+    async function submitAnswers() {
+      const serverData = {
+        name: document.getElementById("serverName").value,
+        ip: document.getElementById("serverIP").value,
+        port: document.getElementById("serverPort").value,
+        version: document.getElementById("serverVersion").value
+      };
+
+      await db.collection("servers").add(serverData);
+
+      clearForm();
+      toggleForm();
+    }
+
     function updateServerList() {
-      // Recupera os servidores do Firestore e atualiza a lista
       db.collection("servers").get().then((querySnapshot) => {
-        document.getElementById("serverList").innerHTML = "<h2>Lista de Servidores:</h2>";
+        const serverList = document.getElementById("serverList");
+        serverList.innerHTML = "<h2>Lista de Servidores:</h2>";
         querySnapshot.forEach((doc) => {
           const serverData = doc.data();
-          document.getElementById("serverList").innerHTML +=
-            `<p>Nome: ${serverData.name}, IP: ${serverData.ip}, Porta: ${serverData.port}, Versão: ${serverData.version}</p>`;
+          serverList.innerHTML += `<p>Nome: ${serverData.name}, IP: ${serverData.ip}, Porta: ${serverData.port}, Versão: ${serverData.version}</p>`;
         });
       });
     }
 
     function clearForm() {
-      document.getElementById("serverName").value = "";
-      document.getElementById("serverIP").value = "";
-      document.getElementById("serverPort").value = "";
-      document.getElementById("serverVersion").value = "";
+      document.getElementById("questions").reset();
     }
 
     // Atualiza a lista de servidores ao carregar a página
