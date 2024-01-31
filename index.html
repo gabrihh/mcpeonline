@@ -22,6 +22,10 @@
     button {
       padding: 15px 30px; /* Ajuste o tamanho do botão alterando esses valores */
     }
+
+    #serverList {
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
@@ -44,12 +48,12 @@
     <button onclick="submitAnswers()">OK</button>
   </div>
 
-  <!-- Adicione as bibliotecas do Firebase -->
+  <div id="serverList"></div>
+
   <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js"></script>
 
   <script>
-    // Configuração do Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyDH0mEn-QeKHC9U6FNLUvOygLkVxH-3MoM",
       authDomain: "mcpe-online-ef467.firebaseapp.com",
@@ -60,8 +64,8 @@
       measurementId: "G-1EPEGN7Z30"
     };
 
-    // Inicialize o Firebase
     firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
     function showQuestions() {
       document.getElementById("configureBtn").style.display = "none";
@@ -74,8 +78,7 @@
       var serverPort = document.getElementById("serverPort").value;
       var serverVersion = document.getElementById("serverVersion").value;
 
-      // Aqui você pode fazer algo com as respostas, como enviar para o Firebase Firestore
-      var db = firebase.firestore();
+      // Adiciona as respostas ao Firestore
       db.collection("servers").add({
         name: serverName,
         ip: serverIP,
@@ -84,11 +87,40 @@
       })
       .then(function(docRef) {
         console.log("Document written with ID: ", docRef.id);
+        // Limpa o formulário
+        clearForm();
+        // Atualiza a lista de servidores
+        updateServerList();
+        // Volta para a primeira cena
+        document.getElementById("configureBtn").style.display = "block";
+        document.getElementById("questions").style.display = "none";
       })
       .catch(function(error) {
         console.error("Error adding document: ", error);
       });
     }
+
+    function updateServerList() {
+      // Recupera os servidores do Firestore e atualiza a lista
+      db.collection("servers").get().then((querySnapshot) => {
+        document.getElementById("serverList").innerHTML = "<h2>Lista de Servidores:</h2>";
+        querySnapshot.forEach((doc) => {
+          const serverData = doc.data();
+          document.getElementById("serverList").innerHTML +=
+            `<p>Nome: ${serverData.name}, IP: ${serverData.ip}, Porta: ${serverData.port}, Versão: ${serverData.version}</p>`;
+        });
+      });
+    }
+
+    function clearForm() {
+      document.getElementById("serverName").value = "";
+      document.getElementById("serverIP").value = "";
+      document.getElementById("serverPort").value = "";
+      document.getElementById("serverVersion").value = "";
+    }
+
+    // Atualiza a lista de servidores ao carregar a página
+    updateServerList();
   </script>
 
 </body>
