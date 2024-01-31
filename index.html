@@ -72,32 +72,28 @@
       document.getElementById("questions").style.display = "block";
     }
 
-    function submitAnswers() {
+    async function submitAnswers() {
       var serverName = document.getElementById("serverName").value;
       var serverIP = document.getElementById("serverIP").value;
       var serverPort = document.getElementById("serverPort").value;
       var serverVersion = document.getElementById("serverVersion").value;
 
       // Adiciona as respostas ao Firestore
-      db.collection("servers").add({
+      await db.collection("servers").add({
         name: serverName,
         ip: serverIP,
         port: serverPort,
         version: serverVersion
-      })
-      .then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
-        // Limpa o formulário
-        clearForm();
-        // Volta para a primeira cena
-        document.getElementById("configureBtn").style.display = "block";
-        document.getElementById("questions").style.display = "none";
-        // Atualiza a lista de servidores
-        updateServerList();
-      })
-      .catch(function(error) {
-        console.error("Error adding document: ", error);
       });
+
+      console.log("Document written");
+      // Limpa o formulário
+      clearForm();
+      // Volta para a primeira cena
+      document.getElementById("configureBtn").style.display = "block";
+      document.getElementById("questions").style.display = "none";
+      // Atualiza a lista de servidores
+      updateServerList();
     }
 
     function updateServerList() {
