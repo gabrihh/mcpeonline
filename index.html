@@ -4,11 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCPE Online</title>
-    <!-- Adicione isso antes do seu script JavaScript -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
-    <!-- Adicione o seu arquivo firebase.js -->
-    <script src="firebase.js"></script>
     <style>
         body {
             display: flex;
@@ -62,40 +57,21 @@
     <button onclick="showServerForm()">Configurar Servidor</button>
 
     <script>
-        // Configure seu aplicativo Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyDH0mEn-QeKHC9U6FNLUvOygLkVxH-3MoM",
-            authDomain: "mcpe-online-ef467.firebaseapp.com",
-            projectId: "mcpe-online-ef467",
-            storageBucket: "mcpe-online-ef467.appspot.com",
-            messagingSenderId: "134407607985",
-            appId: "1:134407607985:web:93e63172597cf02b60f490",
-            measurementId: "G-1EPEGN7Z30"
-        };
-
-        // Inicialize o Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
         function showServerForm() {
             document.getElementById('serverForm').style.display = 'flex';
         }
 
-        async function addServer() {
+        function addServer() {
             console.log("Botão OK pressionado");
             const serverName = document.getElementById('serverName').value;
             const port = document.getElementById('port').value;
             const version = document.getElementById('version').value;
 
-            // Adicione os dados ao Firestore
-            await db.collection('servidores').add({
-                nome: serverName,
-                porta: port,
-                versao: version
-            });
-
-            // Atualize a lista de servidores
-            updateServerList();
+            // Simular adição de dados
+            const serverList = document.getElementById('serverList');
+            const serverInfo = document.createElement('div');
+            serverInfo.innerHTML = `<strong>${serverName}</strong><br>Porta: ${port}<br>Versão: ${version}<hr>`;
+            serverList.appendChild(serverInfo);
 
             // Limpa os campos do formulário
             document.getElementById('serverName').value = '';
@@ -104,20 +80,6 @@
 
             // Esconde o formulário após adicionar o servidor
             document.getElementById('serverForm').style.display = 'none';
-        }
-
-        function updateServerList() {
-            const serverList = document.getElementById('serverList');
-            serverList.innerHTML = ''; // Limpa a lista antes de atualizar
-
-            // Recupera os dados do Firestore e exibe na lista
-            db.collection('servidores').get().then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    const serverInfo = document.createElement('div');
-                    serverInfo.innerHTML = `<strong>${doc.data().nome}</strong><br>Porta: ${doc.data().porta}<br>Versão: ${doc.data().versao}<hr>`;
-                    serverList.appendChild(serverInfo);
-                });
-            });
         }
     </script>
 </body>
