@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCPE Online</title>
-    <!-- Adicione estas linhas abaixo -->
     <!-- Adicione isso antes do seu script JavaScript -->
-    <!-- Adicione isso antes do seu script JavaScript -->
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
-<!-- Adicione o seu script principal -->
-<script src="mcpeonline/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
+    <!-- Adicione o seu script principal -->
+    <script src="mcpeonline/firebase.js"></script>
     <style>
         body {
             display: flex;
@@ -84,28 +82,28 @@
         }
 
         async function addServer() {
-    console.log("Botão OK pressionado"); // Adicione esta linha
-    const serverName = document.getElementById('serverName').value;
-    const port = document.getElementById('port').value;
-    const version = document.getElementById('version').value;
+            console.log("Botão OK pressionado");
+            const serverName = document.getElementById('serverName').value;
+            const port = document.getElementById('port').value;
+            const version = document.getElementById('version').value;
 
-    // Adicione os dados ao Firestore
-    await db.collection('servidores').add({
-        nome: serverName,
-        porta: port,
-        versao: version
-    });
+            // Adicione os dados ao Firestore
+            await db.collection('servidores').add({
+                nome: serverName,
+                porta: port,
+                versao: version
+            });
 
-    // Atualize a lista de servidores
-    updateServerList();
+            // Atualize a lista de servidores
+            updateServerList();
 
-    // Limpa os campos do formulário
-    document.getElementById('serverName').value = '';
-    document.getElementById('port').value = '';
-    document.getElementById('version').value = '';
+            // Limpa os campos do formulário
+            document.getElementById('serverName').value = '';
+            document.getElementById('port').value = '';
+            document.getElementById('version').value = '';
 
-    // Esconde o formulário após adicionar o servidor
-    document.getElementById('serverForm').style.display = 'none';
+            // Esconde o formulário após adicionar o servidor
+            document.getElementById('serverForm').style.display = 'none';
         }
 
         function updateServerList() {
