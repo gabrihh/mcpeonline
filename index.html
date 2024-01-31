@@ -27,6 +27,10 @@
             flex-direction: column;
             align-items: center;
         }
+
+        #serverList {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -87,6 +91,9 @@
                 });
             });
         };
+
+        // Chama updateServerList() quando a página é carregada
+        window.onload = updateServerList;
     </script>
 </body>
 </html>
