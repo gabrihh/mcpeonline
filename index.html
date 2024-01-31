@@ -44,7 +44,25 @@
     <button onclick="submitAnswers()">OK</button>
   </div>
 
+  <!-- Adicione as bibliotecas do Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js"></script>
+
   <script>
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDH0mEn-QeKHC9U6FNLUvOygLkVxH-3MoM",
+      authDomain: "mcpe-online-ef467.firebaseapp.com",
+      projectId: "mcpe-online-ef467",
+      storageBucket: "mcpe-online-ef467.appspot.com",
+      messagingSenderId: "134407607985",
+      appId: "1:134407607985:web:93e63172597cf02b60f490",
+      measurementId: "G-1EPEGN7Z30"
+    };
+
+    // Inicialize o Firebase
+    firebase.initializeApp(firebaseConfig);
+
     function showQuestions() {
       document.getElementById("configureBtn").style.display = "none";
       document.getElementById("questions").style.display = "block";
@@ -56,11 +74,20 @@
       var serverPort = document.getElementById("serverPort").value;
       var serverVersion = document.getElementById("serverVersion").value;
 
-      // Aqui você pode fazer algo com as respostas, como exibir ou enviar para algum lugar
-      console.log("Nome do Servidor:", serverName);
-      console.log("IP:", serverIP);
-      console.log("Porta:", serverPort);
-      console.log("Versão:", serverVersion);
+      // Aqui você pode fazer algo com as respostas, como enviar para o Firebase Firestore
+      var db = firebase.firestore();
+      db.collection("servers").add({
+        name: serverName,
+        ip: serverIP,
+        port: serverPort,
+        version: serverVersion
+      })
+      .then(function(docRef) {
+        console.log("Document written with ID: ", docRef.id);
+      })
+      .catch(function(error) {
+        console.error("Error adding document: ", error);
+      });
     }
   </script>
 
