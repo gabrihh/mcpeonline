@@ -1,4 +1,4 @@
-// meuScript.js
+// firebase.js
 
 const { initializeApp, getAnalytics } = require("firebase/app");
 const { getFirestore, collection, addDoc } = require("firebase/firestore");
