@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCPE Online</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
     <style>
         body {
             display: flex;
@@ -43,36 +45,48 @@
         <button onclick="addServer()">OK</button>
     </div>
 
-    <div id="serverList">
-        <!-- Aqui serão exibidas as informações dos servidores -->
-    </div>
+    <div id="serverList"></div>
 
     <button onclick="showServerForm()">Configurar Servidor</button>
 
     <script>
-        function showServerForm() {
-            document.getElementById('serverForm').style.display = 'flex';
-        }
+        const firebaseConfig = {
+            apiKey: "AIzaSyDH0mEn-QeKHC9U6FNLUvOygLkVxH-3MoM",
+            authDomain: "mcpe-online-ef467.firebaseapp.com",
+            projectId: "mcpe-online-ef467",
+            storageBucket: "mcpe-online-ef467.appspot.com",
+            messagingSenderId: "134407607985",
+            appId: "1:134407607985:web:93e63172597cf02b60f490",
+            measurementId: "G-1EPEGN7Z30"
+        };
 
-        function addServer() {
-            const serverName = document.getElementById('serverName').value;
-            const port = document.getElementById('port').value;
-            const version = document.getElementById('version').value;
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-            // Simular adição de dados
+        const showServerForm = () => serverForm.style.display = 'flex';
+
+        const addServer = async () => {
+            const [name, port, version] = ['serverName', 'port', 'version'].map(id => document.getElementById(id).value);
+            
+            await db.collection('servidores').add({ nome: name, porta: port, versao: version });
+            updateServerList();
+            
+            ['serverName', 'port', 'version'].forEach(id => document.getElementById(id).value = '');
+            serverForm.style.display = 'none';
+        };
+
+        const updateServerList = () => {
             const serverList = document.getElementById('serverList');
-            const serverInfo = document.createElement('div');
-            serverInfo.innerHTML = `<strong>${serverName}</strong><br>Porta: ${port}<br>Versão: ${version}<hr>`;
-            serverList.appendChild(serverInfo);
-
-            // Limpa os campos do formulário
-            document.getElementById('serverName').value = '';
-            document.getElementById('port').value = '';
-            document.getElementById('version').value = '';
-
-            // Esconde o formulário após adicionar o servidor
-            document.getElementById('serverForm').style.display = 'none';
-        }
+            serverList.innerHTML = '';
+            
+            db.collection('servidores').get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    const serverInfo = document.createElement('div');
+                    serverInfo.innerHTML = `<strong>${doc.data().nome}</strong><br>Porta: ${doc.data().porta}<br>Versão: ${doc.data().versao}<hr>`;
+                    serverList.appendChild(serverInfo);
+                });
+            });
+        };
     </script>
 </body>
 </html>
