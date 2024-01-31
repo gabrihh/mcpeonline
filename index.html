@@ -1,99 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCPE Online</title>
-    <style>
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            flex-direction: column;
-            font-family: Arial, sans-serif;
-        }
-
-        input, button {
-            margin: 10px;
-            padding: 5px;
-        }
-
-        #serverForm {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        #serverList {
-            margin-top: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuração do Servidor</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+  </style>
 </head>
 <body>
-    <h1>MCPE Online</h1>
 
-    <div id="serverForm">
-        <label for="serverName">Nome do Servidor:</label>
-        <input type="text" id="serverName">
+  <button onclick="showQuestions()">Configurar Servidor</button>
 
-        <label for="port">Porta:</label>
-        <input type="text" id="port">
+  <div id="questions" style="display: none;">
+    <label for="serverName">Nome do Servidor:</label>
+    <input type="text" id="serverName" required><br>
 
-        <label for="version">Versão:</label>
-        <input type="text" id="version">
+    <label for="serverIP">IP:</label>
+    <input type="text" id="serverIP" required><br>
 
-        <button onclick="addServer()">OK</button>
-    </div>
+    <label for="serverPort">Porta:</label>
+    <input type="text" id="serverPort" required><br>
 
-    <div id="serverList"></div>
+    <label for="serverVersion">Versão:</label>
+    <input type="text" id="serverVersion" required><br>
 
-    <button onclick="showServerForm()">Configurar Servidor</button>
+    <button onclick="submitAnswers()">OK</button>
+  </div>
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDH0mEn-QeKHC9U6FNLUvOygLkVxH-3MoM",
-            authDomain: "mcpe-online-ef467.firebaseapp.com",
-            projectId: "mcpe-online-ef467",
-            storageBucket: "mcpe-online-ef467.appspot.com",
-            messagingSenderId: "134407607985",
-            appId: "1:134407607985:web:93e63172597cf02b60f490",
-            measurementId: "G-1EPEGN7Z30"
-        };
+  <script>
+    function showQuestions() {
+      document.getElementById("questions").style.display = "block";
+    }
 
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+    function submitAnswers() {
+      var serverName = document.getElementById("serverName").value;
+      var serverIP = document.getElementById("serverIP").value;
+      var serverPort = document.getElementById("serverPort").value;
+      var serverVersion = document.getElementById("serverVersion").value;
 
-        const serverForm = document.getElementById('serverForm');
+      // Aqui você pode fazer algo com as respostas, como exibir ou enviar para algum lugar
+      console.log("Nome do Servidor:", serverName);
+      console.log("IP:", serverIP);
+      console.log("Porta:", serverPort);
+      console.log("Versão:", serverVersion);
+    }
+  </script>
 
-        const showServerForm = () => serverForm.style.display = 'flex';
-
-        const addServer = async () => {
-            const [name, port, version] = ['serverName', 'port', 'version'].map(id => document.getElementById(id).value);
-            
-            await db.collection('servidores').add({ nome: name, porta: port, versao: version });
-            updateServerList();
-            
-            ['serverName', 'port', 'version'].forEach(id => document.getElementById(id).value = '');
-            serverForm.style.display = 'none';
-        };
-
-        const updateServerList = () => {
-            const serverList = document.getElementById('serverList');
-            serverList.innerHTML = '';
-            
-            db.collection('servidores').get().then(querySnapshot => {
-                querySnapshot.forEach(doc => {
-                    const serverInfo = document.createElement('div');
-                    serverInfo.innerHTML = `<strong>${doc.data().nome}</strong><br>Porta: ${doc.data().porta}<br>Versão: ${doc.data().versao}<hr>`;
-                    serverList.appendChild(serverInfo);
-                });
-            });
-        };
-
-        // Chama updateServerList() quando a página é carregada
-        window.onload = updateServerList;
-    </script>
 </body>
 </html>
