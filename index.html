@@ -79,23 +79,24 @@
         }
 
         async function addServer() {
-            const serverName = document.getElementById('serverName').value;
-            const port = document.getElementById('port').value;
-            const version = document.getElementById('version').value;
+    alert("Botão OK pressionado");
+    const serverName = document.getElementById('serverName').value;
+    const port = document.getElementById('port').value;
+    const version = document.getElementById('version').value;
 
-            await db.collection('servidores').add({
-                nome: serverName,
-                porta: port,
-                versao: version
-            });
+    await db.collection('servidores').add({
+        nome: serverName,
+        porta: port,
+        versao: version
+    });
 
-            updateServerList();
+    updateServerList();
 
-            document.getElementById('serverName').value = '';
-            document.getElementById('port').value = '';
-            document.getElementById('version').value = '';
+    document.getElementById('serverName').value = '';
+    document.getElementById('port').value = '';
+    document.getElementById('version').value = '';
 
-            document.getElementById('serverForm').style.display = 'none';
+    document.getElementById('serverForm').style.display = 'none';
         }
 
         function updateServerList() {
