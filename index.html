@@ -3,111 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Configuração do Servidor</title>
-  <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    button, input, label {
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
-
-    button {
-      padding: 15px 30px; /* Ajuste o tamanho do botão alterando esses valores */
-    }
-
-    #serverList {
-      margin-top: 20px;
-    }
-  </style>
+  <title>Chat Room Example</title>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
 </head>
 <body>
 
-  <button onclick="toggleForm()">Configurar Servidor</button>
+<button id="joinButton">Join Chat</button>
 
-  <div id="questions" style="display: none;">
-    <label for="serverName">Nome do Servidor:</label>
-    <input type="text" id="serverName" required><br>
+<script>
+  // Substitua estas configurações com as suas do Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyDH0mEn-QeKHC9U6FNLUvOygLkVxH-3MoM",
+    authDomain: "mcpe-online-ef467.firebaseapp.com",
+    projectId: "mcpe-online-ef467",
+    storageBucket: "mcpe-online-ef467.appspot.com",
+    messagingSenderId: "134407607985",
+    appId: "1:134407607985:web:93e63172597cf02b60f490",
+    measurementId: "G-1EPEGN7Z30"
+  };
 
-    <label for="serverIP">IP:</label>
-    <input type="text" id="serverIP" required><br>
+  // Inicialize o Firebase
+  firebase.initializeApp(firebaseConfig);
 
-    <label for="serverPort">Porta:</label>
-    <input type="text" id="serverPort" required><br>
+  // Obtenha uma referência para o banco de dados
+  const database = firebase.database();
 
-    <label for="serverVersion">Versão:</label>
-    <input type="text" id="serverVersion" required><br>
+  // Adicione um evento de clique ao botão
+  document.getElementById('joinButton').addEventListener('click', () => {
+    // Gere uma chave única para a sala de chat
+    const roomId = generateRoomId();
 
-    <button onclick="submitAnswers()">OK</button>
-  </div>
+    // Adicione o usuário atual à sala de chat no banco de dados
+    const userId = generateUserId();
+    database.ref(`rooms/${roomId}/users/${userId}`).set(true);
 
-  <div id="serverList"></div>
+    // Atualize a interface do usuário ou faça outras ações necessárias
+    alert(`Você entrou na sala ${roomId}`);
+  });
 
-  <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js"></script>
+  // Função para gerar uma chave de sala única
+  function generateRoomId() {
+    return Math.random().toString(36).substr(2, 5);
+  }
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDH0mEn-QeKHC9U6FNLUvOygLkVxH-3MoM",
-      authDomain: "mcpe-online-ef467.firebaseapp.com",
-      projectId: "mcpe-online-ef467",
-      storageBucket: "mcpe-online-ef467.appspot.com",
-      messagingSenderId: "134407607985",
-      appId: "1:134407607985:web:93e63172597cf02b60f490",
-      measurementId: "G-1EPEGN7Z30"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    function toggleForm() {
-      const form = document.getElementById("questions");
-      form.style.display = form.style.display === "none" ? "block" : "none";
-    }
-
-    async function submitAnswers() {
-      const serverData = {
-        name: document.getElementById("serverName").value,
-        ip: document.getElementById("serverIP").value,
-        port: document.getElementById("serverPort").value,
-        version: document.getElementById("serverVersion").value
-      };
-
-      await db.collection("servers").add(serverData);
-
-      clearForm();
-      toggleForm();
-      updateServerList();
-    }
-
-    function updateServerList() {
-      db.collection("servers").get().then((querySnapshot) => {
-        const serverList = document.getElementById("serverList");
-        serverList.innerHTML = "<h2>Lista de Servidores:</h2>";
-        querySnapshot.forEach((doc) => {
-          const serverData = doc.data();
-          serverList.innerHTML += `<p>Nome: ${serverData.name}, IP: ${serverData.ip}, Porta: ${serverData.port}, Versão: ${serverData.version}</p>`;
-        });
-      });
-    }
-
-    function clearForm() {
-      document.getElementById("serverName").value = "";
-      document.getElementById("serverIP").value = "";
-      document.getElementById("serverPort").value = "";
-      document.getElementById("serverVersion").value = "";
-    }
-
-    // Atualiza a lista de servidores ao carregar a página
-    updateServerList();
-  </script>
+  // Função para gerar uma chave de usuário única
+  function generateUserId() {
+    return Math.random().toString(36).substr(2, 5);
+  }
+</script>
 
 </body>
 </html>
