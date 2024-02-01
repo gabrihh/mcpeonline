@@ -3,101 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Server Info App</title>
+  <title>Login and Register</title>
   <style>
     body {
-      text-align: center;
       font-family: Arial, sans-serif;
+      text-align: center;
     }
 
-    .scene {
-      display: none;
-      max-width: 400px;
-      margin: 50px auto;
-    }
-
-    #infoList {
+    #loginForm, #registerForm {
+      display: inline-block;
+      margin: 20px;
       text-align: left;
-      list-style-type: none;
-      padding: 0;
     }
   </style>
 </head>
 <body>
 
-<!-- Cena 1: Informações do Servidor -->
-<div id="scene1" class="scene">
-  <h2>Insira as Informações do Servidor</h2>
-  <label for="serverName">Nome do Servidor:</label>
-  <input type="text" id="serverName"><br>
+<div id="loginForm">
+  <h2>Login</h2>
+  <form action="mysql.php" method="post">
+    <label for="loginUsername">Username:</label>
+    <input type="text" id="loginUsername" name="loginUsername" required><br>
 
-  <label for="ip">IP:</label>
-  <input type="text" id="ip"><br>
+    <label for="loginPassword">Password:</label>
+    <input type="password" id="loginPassword" name="loginPassword" required><br>
 
-  <label for="port">Porta:</label>
-  <input type="text" id="port"><br>
-
-  <label for="version">Versão:</label>
-  <input type="text" id="version"><br>
-
-  <button onclick="showUsers()">Ver Usuários</button>
-  <button onclick="configureServer()">Configurar</button>
+    <button type="submit">Login</button>
+  </form>
 </div>
 
-<!-- Cena 2: Lista de Usuários -->
-<div id="scene2" class="scene">
-  <h2>Lista de Usuários</h2>
-  <ul id="infoList"></ul>
-  <button onclick="resetApp()">Voltar</button>
+<div id="registerForm">
+  <h2>Register</h2>
+  <form action="mysql.php" method="post">
+    <label for="registerUsername">Username:</label>
+    <input type="text" id="registerUsername" name="registerUsername" required><br>
+
+    <label for="registerPassword">Password:</label>
+    <input type="password" id="registerPassword" name="registerPassword" required><br>
+
+    <label for="confirmPassword">Confirm Password:</label>
+    <input type="password" id="confirmPassword" name="confirmPassword" required><br>
+
+    <button type="submit">Register</button>
+  </form>
 </div>
-
-<!-- Cena 3: Configuração do Servidor -->
-<div id="scene3" class="scene">
-  <h2>Configuração do Servidor</h2>
-  <button onclick="resetApp()">Voltar</button>
-</div>
-
-<script>
-  function showUsers() {
-    const serverName = document.getElementById('serverName').value;
-    const ip = document.getElementById('ip').value;
-    const port = document.getElementById('port').value;
-    const version = document.getElementById('version').value;
-
-    const infoList = document.getElementById('infoList');
-    infoList.innerHTML = "";
-
-    const serverInfoItem = document.createElement('li');
-    serverInfoItem.textContent = `Nome do Servidor: ${serverName}, IP: ${ip}, Porta: ${port}, Versão: ${version}`;
-    infoList.appendChild(serverInfoItem);
-
-    for (let i = 1; i <= 5; i++) {
-      const userInfoItem = document.createElement('li');
-      userInfoItem.textContent = `Usuário ${i}: (Informações adicionais)`;
-      infoList.appendChild(userInfoItem);
-    }
-
-    showScene(2);
-  }
-
-  function configureServer() {
-    showScene(3);
-  }
-
-  function resetApp() {
-    showScene(1);
-  }
-
-  function showScene(sceneNumber) {
-    const scenes = document.querySelectorAll('.scene');
-    
-    scenes.forEach(scene => {
-      scene.style.display = 'none';
-    });
-
-    document.getElementById(`scene${sceneNumber}`).style.display = 'block';
-  }
-</script>
 
 </body>
 </html>
