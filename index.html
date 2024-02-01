@@ -8,48 +8,31 @@
     #buttonsContainer {
       margin-top: 20px;
     }
-    .hidden {
-      display: none;
-    }
   </style>
 </head>
 <body>
 
 <div id="buttonsContainer">
   <button id="joinButton" onclick="joinChat()">Join Chat</button>
-  <button id="secondButton" class="hidden">Second Button</button>
+  <button id="secondButton" onclick="alert('Second Button Clicked')" style="display:none;">Second Button</button>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyDH0mEn-QeKHC9U6FNLUvOygLkVxH-3MoM",
-    authDomain: "mcpe-online-ef467.firebaseapp.com",
-    projectId: "mcpe-online-ef467",
-    storageBucket: "mcpe-online-ef467.appspot.com",
-    messagingSenderId: "134407607985",
-    appId: "1:134407607985:web:93e63172597cf02b60f490",
-    measurementId: "G-1EPEGN7Z30"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const database = firebase.database();
-
   function joinChat() {
     const roomId = generateRoomId();
     const userId = generateUserId();
-    
-    database.ref(`rooms/${roomId}/users/${userId}`).set(true)
-      .then(() => {
-        console.log(`Usuário adicionado à sala ${roomId}`);
+
+    // Chamada AJAX para o servidor PHP
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        console.log(xhr.responseText);
         alert(`Você entrou na sala ${roomId}`);
-        document.getElementById('secondButton').classList.remove('hidden');
-      })
-      .catch(error => {
-        console.error("Erro ao adicionar usuário à sala:", error);
-      });
+        document.getElementById('secondButton').style.display = 'block';
+      }
+    };
+    xhr.open("GET", `join_chat.php?roomId=${roomId}&userId=${userId}`, true);
+    xhr.send();
   }
 
   function generateRoomId() {
