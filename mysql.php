@@ -39,6 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $row = $result->fetch_assoc();
             if (password_verify($loginPassword, $row['password'])) {
                 echo "Login bem-sucedido!";
+                showUserList();
             } else {
                 echo "Senha incorreta.";
             }
@@ -67,6 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 if ($conn->query($registerQuery) === TRUE) {
                     echo "Registro bem-sucedido!";
+                    showUserList();
                 } else {
                     echo "Erro no registro: " . $conn->error;
                 }
@@ -75,6 +77,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
+}
+
+function showUserList() {
+    global $conn;
+
+    $userListQuery = "SELECT * FROM users";
+    $result = $conn->query($userListQuery);
+
+    echo "<h2>Lista de Usuários Registrados:</h2>";
+    echo "<ul>";
+    while ($row = $result->fetch_assoc()) {
+        echo "<li>" . $row['username'] . "</li>";
+    }
+    echo "</ul>";
 }
 
 $conn->close();
