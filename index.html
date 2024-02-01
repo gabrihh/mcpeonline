@@ -40,7 +40,8 @@
   <label for="version">Versão:</label>
   <input type="text" id="version"><br>
 
-  <button onclick="submitServerInfo()">OK</button>
+  <button onclick="showUsers()">Ver Usuários</button>
+  <button onclick="configureServer()">Configurar</button>
 </div>
 
 <!-- Cena 2: Lista de Usuários -->
@@ -50,29 +51,40 @@
   <button onclick="resetApp()">Voltar</button>
 </div>
 
+<!-- Cena 3: Configuração do Servidor -->
+<div id="scene3" class="scene">
+  <h2>Configuração do Servidor</h2>
+  <button onclick="resetApp()">Voltar</button>
+</div>
+
 <script>
-  function submitServerInfo() {
-    // Obter informações do servidor
+  function showUsers() {
     const serverName = document.getElementById('serverName').value;
     const ip = document.getElementById('ip').value;
     const port = document.getElementById('port').value;
     const version = document.getElementById('version').value;
 
-    // Armazenar informações na sessão para uso posterior
-    sessionStorage.setItem('serverName', serverName);
-    sessionStorage.setItem('ip', ip);
-    sessionStorage.setItem('port', port);
-    sessionStorage.setItem('version', version);
+    const infoList = document.getElementById('infoList');
+    infoList.innerHTML = "";
 
-    // Alternar para a cena 2
+    const serverInfoItem = document.createElement('li');
+    serverInfoItem.textContent = `Nome do Servidor: ${serverName}, IP: ${ip}, Porta: ${port}, Versão: ${version}`;
+    infoList.appendChild(serverInfoItem);
+
+    for (let i = 1; i <= 5; i++) {
+      const userInfoItem = document.createElement('li');
+      userInfoItem.textContent = `Usuário ${i}: (Informações adicionais)`;
+      infoList.appendChild(userInfoItem);
+    }
+
     showScene(2);
   }
 
-  function resetApp() {
-    // Limpar informações da sessão
-    sessionStorage.clear();
+  function configureServer() {
+    showScene(3);
+  }
 
-    // Alternar para a cena 1
+  function resetApp() {
     showScene(1);
   }
 
@@ -84,29 +96,6 @@
     });
 
     document.getElementById(`scene${sceneNumber}`).style.display = 'block';
-
-    if (sceneNumber === 2) {
-      // Preencher a lista de usuários com informações da sessão
-      const infoList = document.getElementById('infoList');
-      infoList.innerHTML = "";
-
-      // Adicionar informações do servidor à lista
-      const serverName = sessionStorage.getItem('serverName') || "N/A";
-      const ip = sessionStorage.getItem('ip') || "N/A";
-      const port = sessionStorage.getItem('port') || "N/A";
-      const version = sessionStorage.getItem('version') || "N/A";
-
-      const serverInfoItem = document.createElement('li');
-      serverInfoItem.textContent = `Nome do Servidor: ${serverName}, IP: ${ip}, Porta: ${port}, Versão: ${version}`;
-      infoList.appendChild(serverInfoItem);
-
-      // Adicionar informações de usuários à lista (pode ser expandido conforme necessário)
-      for (let i = 1; i <= 5; i++) {
-        const userInfoItem = document.createElement('li');
-        userInfoItem.textContent = `Usuário ${i}: (Informações adicionais)`;
-        infoList.appendChild(userInfoItem);
-      }
-    }
   }
 </script>
 
