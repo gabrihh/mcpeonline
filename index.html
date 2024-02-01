@@ -10,7 +10,7 @@
       text-align: center;
     }
 
-    #loginForm, #registerForm {
+    .form-container {
       display: inline-block;
       margin: 20px;
       text-align: left;
@@ -20,12 +20,19 @@
       cursor: pointer;
       color: blue;
       text-decoration: underline;
+      display: block;
+      margin-top: 10px;
+    }
+
+    .error-message {
+      color: red;
+      margin-top: 5px;
     }
   </style>
 </head>
 <body>
 
-<div id="loginForm">
+<div id="loginForm" class="form-container">
   <h2>Login</h2>
   <form action="mysql.php" method="post">
     <label for="loginUsername">Username:</label>
@@ -35,14 +42,13 @@
     <input type="password" id="loginPassword" name="loginPassword" required><br>
 
     <button type="submit">Login</button>
+    <p class="toggle-btn" onclick="showRegisterForm()">Ainda não é registrado? Registrar agora.</p>
   </form>
-
-  <p class="toggle-btn" onclick="showRegisterForm()">Ainda não é registrado? Registrar agora.</p>
 </div>
 
-<div id="registerForm" style="display: none;">
+<div id="registerForm" class="form-container" style="display: none;">
   <h2>Register</h2>
-  <form action="mysql.php" method="post">
+  <form action="mysql.php" method="post" onsubmit="return validatePassword()">
     <label for="registerUsername">Username:</label>
     <input type="text" id="registerUsername" name="registerUsername" required><br>
 
@@ -50,12 +56,12 @@
     <input type="password" id="registerPassword" name="registerPassword" required><br>
 
     <label for="confirmPassword">Confirm Password:</label>
-    <input type="password" id="confirmPassword" name="confirmPassword" required><br>
+    <input type="password" id="confirmPassword" name="confirmPassword" required>
+    <span class="error-message" id="passwordError"></span><br>
 
     <button type="submit">Register</button>
+    <p class="toggle-btn" onclick="showLoginForm()">Já é registrado? Fazer login.</p>
   </form>
-
-  <p class="toggle-btn" onclick="showLoginForm()">Já é registrado? Fazer login.</p>
 </div>
 
 <script>
@@ -68,7 +74,21 @@
     document.getElementById('loginForm').style.display = 'inline-block';
     document.getElementById('registerForm').style.display = 'none';
   }
+
+  function validatePassword() {
+    var password = document.getElementById('registerPassword').value;
+    var confirmPassword = document.getElementById('confirmPassword').value;
+    var errorSpan = document.getElementById('passwordError');
+
+    if (password !== confirmPassword) {
+      errorSpan.textContent = 'As senhas não coincidem.';
+      return false;
+    } else {
+      errorSpan.textContent = '';
+      return true;
+    }
+  }
 </script>
 
 </body>
-  </html>
+</html>
