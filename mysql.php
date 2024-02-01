@@ -52,19 +52,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $registerPassword = $_POST['registerPassword'];
         $confirmPassword = $_POST['confirmPassword'];
 
-        // Adicione a lógica de registro aqui
-        if ($registerPassword === $confirmPassword) {
-            $hashedPassword = password_hash($registerPassword, PASSWORD_DEFAULT);
+        // Verifica se o nome de usuário já está registrado
+        $checkUsernameQuery = "SELECT * FROM users WHERE username='$registerUsername'";
+        $checkResult = $conn->query($checkUsernameQuery);
 
-            $registerQuery = "INSERT INTO users (username, password) VALUES ('$registerUsername', '$hashedPassword')";
-
-            if ($conn->query($registerQuery) === TRUE) {
-                echo "Registro bem-sucedido!";
-            } else {
-                echo "Erro no registro: " . $conn->error;
-            }
+        if ($checkResult->num_rows > 0) {
+            echo "Nome de usuário já registrado. Escolha outro.";
         } else {
-            echo "As senhas não coincidem.";
+            // Se o nome de usuário não está registrado, proceda com o registro
+            if ($registerPassword === $confirmPassword) {
+                $hashedPassword = password_hash($registerPassword, PASSWORD_DEFAULT);
+
+                $registerQuery = "INSERT INTO users (username, password) VALUES ('$registerUsername', '$hashedPassword')";
+
+                if ($conn->query($registerQuery) === TRUE) {
+                    echo "Registro bem-sucedido!";
+                } else {
+                    echo "Erro no registro: " . $conn->error;
+                }
+            } else {
+                echo "As senhas não coincidem.";
+            }
         }
     }
 }
