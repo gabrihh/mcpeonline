@@ -2,7 +2,7 @@
 $servername = "sql10.freemysqlhosting.net";
 $username = "sql10681148";
 $password = "1sBtDA33sb";
-$dbname = "seu_nome_de_banco_de_dados";
+$dbname = "sql10681148";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
