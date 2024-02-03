@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCPE Online</title>
     <style>
@@ -10,137 +9,70 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
         }
 
-        button {
-            padding: 8px 16px;
-            font-size: 16px;
-            margin-top: 20px;
+        input, button {
+            margin: 10px;
+            padding: 5px;
         }
 
-        #serverInfo {
+        #serverForm {
             display: none;
-            text-align: center;
-        }
-
-        #configServer {
-            display: none;
-            text-align: center;
-        }
-
-        #userList {
-            text-align: center;
+            flex-direction: column;
+            align-items: center;
         }
     </style>
 </head>
 <body>
+    <h1>MCPE Online</h1>
 
-    <button id="startButton" onclick="showConfigServerButton()">Iniciar</button>
-
-    <div id="serverInfo">
-        <h2>Informações do Servidor</h2>
+    <div id="serverForm">
         <label for="serverName">Nome do Servidor:</label>
         <input type="text" id="serverName">
-        <br>
-        <label for="serverIP">IP:</label>
-        <input type="text" id="serverIP">
-        <br>
-        <label for="serverPort">Porta:</label>
-        <input type="text" id="serverPort">
-        <br>
-        <label for="serverVersion">Versão:</label>
-        <input type="text" id="serverVersion">
-        <br>
-        <button onclick="showUserList()">OK</button>
+
+        <label for="port">Porta:</label>
+        <input type="text" id="port">
+
+        <label for="version">Versão:</label>
+        <input type="text" id="version">
+
+        <button onclick="addServer()">OK</button>
     </div>
 
-    <div id="configServer">
-        <h2>Configurar Servidor</h2>
-        <label for="serverNameConfig">Nome do Servidor:</label>
-        <input type="text" id="serverNameConfig">
-        <br>
-        <label for="serverIPConfig">IP:</label>
-        <input type="text" id="serverIPConfig">
-        <br>
-        <label for="serverPortConfig">Porta:</label>
-        <input type="text" id="serverPortConfig">
-        <br>
-        <label for="serverVersionConfig">Versão:</label>
-        <input type="text" id="serverVersionConfig">
-        <br>
-        <button onclick="showStartButton()">OK</button>
+    <div id="serverList">
+        <!-- Aqui serão exibidas as informações dos servidores -->
     </div>
 
-    <div id="userList">
-        <h2>Lista de Usuários</h2>
-        <ul id="userInfoList"></ul>
-    </div>
+    <button onclick="showServerForm()">Configurar Servidor</button>
 
     <script>
-        var users = [];
-
-        function showConfigServerButton() {
-            document.getElementById("startButton").style.display = "none";
-            document.getElementById("configServer").style.display = "block";
+        function showServerForm() {
+            document.getElementById('serverForm').style.display = 'flex';
         }
 
-        function showStartButton() {
-            var serverName = document.getElementById("serverNameConfig").value;
-            var serverIP = document.getElementById("serverIPConfig").value;
-            var serverPort = document.getElementById("serverPortConfig").value;
-            var serverVersion = document.getElementById("serverVersionConfig").value;
+        function addServer() {
+            const serverName = document.getElementById('serverName').value;
+            const port = document.getElementById('port').value;
+            const version = document.getElementById('version').value;
 
-            var user = {
-                name: serverName,
-                ip: serverIP,
-                port: serverPort,
-                version: serverVersion
-            };
+            // Simular adição de dados
+            const serverList = document.getElementById('serverList');
+            const serverInfo = document.createElement('div');
+            serverInfo.innerHTML = `<strong>${serverName}</strong><br>Porta: ${port}<br>Versão: ${version}<hr>`;
+            serverList.appendChild(serverInfo);
 
-            users.push(user);
+            // Limpa os campos do formulário
+            document.getElementById('serverName').value = '';
+            document.getElementById('port').value = '';
+            document.getElementById('version').value = '';
 
-            updateUserInfoList();
-            
-            document.getElementById("configServer").style.display = "none";
-            document.getElementById("startButton").style.display = "block";
-        }
-
-        function showUserList() {
-            var serverName = document.getElementById("serverName").value;
-            var serverIP = document.getElementById("serverIP").value;
-            var serverPort = document.getElementById("serverPort").value;
-            var serverVersion = document.getElementById("serverVersion").value;
-
-            var user = {
-                name: serverName,
-                ip: serverIP,
-                port: serverPort,
-                version: serverVersion
-            };
-
-            users.push(user);
-
-            updateUserInfoList();
-
-            document.getElementById("serverInfo").style.display = "none";
-            document.getElementById("configServer").style.display = "none";
-            document.getElementById("startButton").style.display = "block";
-        }
-
-        function updateUserInfoList() {
-            var userList = document.getElementById("userInfoList");
-            userList.innerHTML = "";
-
-            users.forEach(function(user, index) {
-                var listItem = document.createElement("li");
-                listItem.innerHTML = `Usuário ${index + 1}: ${user.name} - IP: ${user.ip} - Porta: ${user.port} - Versão: ${user.version}`;
-                userList.appendChild(listItem);
-            });
+            // Esconde o formulário após adicionar o servidor
+            document.getElementById('serverForm').style.display = 'none';
         }
     </script>
-
 </body>
-    </html>
+</html>
