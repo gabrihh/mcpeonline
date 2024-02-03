@@ -1,94 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login and Register</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
-
-    .form-container {
-      display: inline-block;
-      margin: 20px;
-      text-align: left;
-    }
-
-    .toggle-btn {
-      cursor: pointer;
-      color: blue;
-      text-decoration: underline;
-      display: block;
-      margin-top: 10px;
-    }
-
-    .error-message {
-      color: red;
-      margin-top: 5px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nick do Minecraft</title>
 </head>
 <body>
 
-<div id="loginForm" class="form-container">
-  <h2>Login</h2>
-  <form action="mysql.php" method="post">
-    <label for="loginUsername">Username:</label>
-    <input type="text" id="loginUsername" name="loginUsername" required><br>
-
-    <label for="loginPassword">Password:</label>
-    <input type="password" id="loginPassword" name="loginPassword" required><br>
-
-    <button type="submit">Login</button>
-    <p class="toggle-btn" onclick="showRegisterForm()">Ainda não é registrado? Registrar agora.</p>
-  </form>
-</div>
-
-<div id="registerForm" class="form-container" style="display: none;">
-  <h2>Register</h2>
-  <form action="mysql.php" method="post" onsubmit="return validatePassword()">
-    <label for="registerUsername">Username:</label>
-    <input type="text" id="registerUsername" name="registerUsername" required><br>
-
-    <label for="registerPassword">Password:</label>
-    <input type="password" id="registerPassword" name="registerPassword" required><br>
-
-    <label for="confirmPassword">Confirm Password:</label>
-    <input type="password" id="confirmPassword" name="confirmPassword" required>
-    <span class="error-message" id="passwordError"></span><br>
-
-    <button type="submit">Register</button>
-    <p class="toggle-btn" onclick="showLoginForm()">Já é registrado? Fazer login.</p>
-  </form>
-</div>
-
-<script>
-  function showRegisterForm() {
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('registerForm').style.display = 'inline-block';
-  }
-
-  function showLoginForm() {
-    document.getElementById('loginForm').style.display = 'inline-block';
-    document.getElementById('registerForm').style.display = 'none';
-  }
-
-  function validatePassword() {
-    var password = document.getElementById('registerPassword').value;
-    var confirmPassword = document.getElementById('confirmPassword').value;
-    var errorSpan = document.getElementById('passwordError');
-
-    if (password !== confirmPassword) {
-      errorSpan.textContent = 'As senhas não coincidem.';
-      return false;
-    } else {
-      errorSpan.textContent = '';
-      return true;
-    }
-  }
-</script>
+    <h1>Nick do Minecraft?</h1>
+    
+    <form>
+        <label for="minecraftNick">Digite seu Nick:</label>
+        <input type="text" id="minecraftNick" name="minecraftNick" required>
+        <br>
+        <input type="submit" value="OK">
+    </form>
 
 </body>
 </html>
