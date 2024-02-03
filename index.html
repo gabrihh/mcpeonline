@@ -15,37 +15,97 @@
             margin: 0;
         }
 
-        form {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        input {
-            padding: 5px;
-            font-size: 16px;
-        }
-
         button {
             padding: 8px 16px;
             font-size: 16px;
+            margin-top: 20px;
+        }
+
+        #serverInfo, #userList {
+            display: none;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <h1>MCPE Online</h1>
-
-    <form>
-        <label for="minecraftNick">Digite seu Nick do Minecraft</label>
-        <input type="text" id="minecraftNick" name="minecraftNick" required>
+    <div id="startScene">
+        <h2>Nick do Minecraft</h2>
+        <label for="nick">Nick:</label>
+        <input type="text" id="nick">
         <br>
-        <button type="submit">OK</button>
-    </form>
+        <button onclick="startServerInfo()">OK</button>
+    </div>
+
+    <div id="serverInfo">
+        <h2>Informações do Servidor</h2>
+        <label for="serverName">Nome do Servidor:</label>
+        <input type="text" id="serverName">
+        <br>
+        <label for="serverIP">IP:</label>
+        <input type="text" id="serverIP">
+        <br>
+        <label for="serverPort">Porta:</label>
+        <input type="text" id="serverPort">
+        <br>
+        <label for="serverVersion">Versão:</label>
+        <input type="text" id="serverVersion">
+        <br>
+        <button onclick="showStartScene()">Voltar</button>
+        <button onclick="showStartButton()">OK</button>
+    </div>
+
+    <div id="userList">
+        <h2>Lista de Usuários</h2>
+        <ul id="userInfoList"></ul>
+    </div>
+
+    <script>
+        var users = [];
+
+        function startServerInfo() {
+            document.getElementById("startScene").style.display = "none";
+            document.getElementById("serverInfo").style.display = "block";
+        }
+
+        function showStartScene() {
+            document.getElementById("startScene").style.display = "block";
+            document.getElementById("serverInfo").style.display = "none";
+        }
+
+        function showStartButton() {
+            var nick = document.getElementById("nick").value;
+            var serverName = document.getElementById("serverName").value;
+            var serverIP = document.getElementById("serverIP").value;
+            var serverPort = document.getElementById("serverPort").value;
+            var serverVersion = document.getElementById("serverVersion").value;
+
+            var user = {
+                nick: nick,
+                serverName: serverName,
+                ip: serverIP,
+                port: serverPort,
+                version: serverVersion
+            };
+
+            users.push(user);
+
+            updateUserInfoList();
+            
+            showStartScene();
+        }
+
+        function updateUserInfoList() {
+            var userList = document.getElementById("userInfoList");
+            userList.innerHTML = "";
+
+            users.forEach(function(user, index) {
+                var listItem = document.createElement("li");
+                listItem.innerHTML = `Usuário ${index + 1}: ${user.nick} - Nome do Servidor: ${user.serverName} - IP: ${user.ip} - Porta: ${user.port} - Versão: ${user.version}`;
+                userList.appendChild(listItem);
+            });
+        }
+    </script>
 
 </body>
 </html>
