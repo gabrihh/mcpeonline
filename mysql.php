@@ -12,16 +12,20 @@ if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
 
-// Obtém o Nick do Minecraft do formulário
-$minecraftNick = $_POST['minecraftNick']; // Certifique-se de validar/sanitizar os dados em um ambiente real
+// Obtém o Nick do usuário a partir do MySQL
+function getNickFromMySQL() {
+    global $conn;
 
-// Prepara e executa a consulta SQL para inserir o Nick na tabela
-$sql = "INSERT INTO sua_tabela (nick_minecraft) VALUES ('$minecraftNick')";
+    $sql = "SELECT nick FROM usuarios WHERE id = 1"; // Substitua '1' pelo identificador correto do usuário
 
-if ($conn->query($sql) === TRUE) {
-    echo "Nick do Minecraft salvo com sucesso!";
-} else {
-    echo "Erro ao salvar o Nick: " . $conn->error;
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        return $row["nick"];
+    } else {
+        return "Nick Não Encontrado";
+    }
 }
 
 // Fecha a conexão
