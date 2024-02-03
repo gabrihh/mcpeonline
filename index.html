@@ -21,21 +21,24 @@
             margin-top: 20px;
         }
 
-        #serverInfo, #userList {
+        #serverInfo {
             display: none;
+            text-align: center;
+        }
+
+        #configServer {
+            display: none;
+            text-align: center;
+        }
+
+        #userList {
             text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <div id="startScene">
-        <h2>Nick do Minecraft</h2>
-        <label for="nick">Nick:</label>
-        <input type="text" id="nick">
-        <br>
-        <button onclick="startServerInfo()">OK</button>
-    </div>
+    <button id="startButton" onclick="showConfigServerButton()">Iniciar</button>
 
     <div id="serverInfo">
         <h2>Informações do Servidor</h2>
@@ -51,7 +54,23 @@
         <label for="serverVersion">Versão:</label>
         <input type="text" id="serverVersion">
         <br>
-        <button onclick="showStartScene()">Voltar</button>
+        <button onclick="showUserList()">OK</button>
+    </div>
+
+    <div id="configServer">
+        <h2>Configurar Servidor</h2>
+        <label for="serverNameConfig">Nome do Servidor:</label>
+        <input type="text" id="serverNameConfig">
+        <br>
+        <label for="serverIPConfig">IP:</label>
+        <input type="text" id="serverIPConfig">
+        <br>
+        <label for="serverPortConfig">Porta:</label>
+        <input type="text" id="serverPortConfig">
+        <br>
+        <label for="serverVersionConfig">Versão:</label>
+        <input type="text" id="serverVersionConfig">
+        <br>
         <button onclick="showStartButton()">OK</button>
     </div>
 
@@ -63,26 +82,19 @@
     <script>
         var users = [];
 
-        function startServerInfo() {
-            document.getElementById("startScene").style.display = "none";
-            document.getElementById("serverInfo").style.display = "block";
-        }
-
-        function showStartScene() {
-            document.getElementById("startScene").style.display = "block";
-            document.getElementById("serverInfo").style.display = "none";
+        function showConfigServerButton() {
+            document.getElementById("startButton").style.display = "none";
+            document.getElementById("configServer").style.display = "block";
         }
 
         function showStartButton() {
-            var nick = document.getElementById("nick").value;
-            var serverName = document.getElementById("serverName").value;
-            var serverIP = document.getElementById("serverIP").value;
-            var serverPort = document.getElementById("serverPort").value;
-            var serverVersion = document.getElementById("serverVersion").value;
+            var serverName = document.getElementById("serverNameConfig").value;
+            var serverIP = document.getElementById("serverIPConfig").value;
+            var serverPort = document.getElementById("serverPortConfig").value;
+            var serverVersion = document.getElementById("serverVersionConfig").value;
 
             var user = {
-                nick: nick,
-                serverName: serverName,
+                name: serverName,
                 ip: serverIP,
                 port: serverPort,
                 version: serverVersion
@@ -92,7 +104,30 @@
 
             updateUserInfoList();
             
-            showStartScene();
+            document.getElementById("configServer").style.display = "none";
+            document.getElementById("startButton").style.display = "block";
+        }
+
+        function showUserList() {
+            var serverName = document.getElementById("serverName").value;
+            var serverIP = document.getElementById("serverIP").value;
+            var serverPort = document.getElementById("serverPort").value;
+            var serverVersion = document.getElementById("serverVersion").value;
+
+            var user = {
+                name: serverName,
+                ip: serverIP,
+                port: serverPort,
+                version: serverVersion
+            };
+
+            users.push(user);
+
+            updateUserInfoList();
+
+            document.getElementById("serverInfo").style.display = "none";
+            document.getElementById("configServer").style.display = "none";
+            document.getElementById("startButton").style.display = "block";
         }
 
         function updateUserInfoList() {
@@ -101,11 +136,11 @@
 
             users.forEach(function(user, index) {
                 var listItem = document.createElement("li");
-                listItem.innerHTML = `Usuário ${index + 1}: ${user.nick} - Nome do Servidor: ${user.serverName} - IP: ${user.ip} - Porta: ${user.port} - Versão: ${user.version}`;
+                listItem.innerHTML = `Usuário ${index + 1}: ${user.name} - IP: ${user.ip} - Porta: ${user.port} - Versão: ${user.version}`;
                 userList.appendChild(listItem);
             });
         }
     </script>
 
 </body>
-</html>
+    </html>
