@@ -1,103 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCPE Online</title>
-    <style>
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            flex-direction: column;
-            font-family: Arial, sans-serif;
-        }
-
-        input, button {
-            margin: 10px;
-            padding: 5px;
-        }
-
-        #serverForm {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-        }
-    </style>
+    <title>Login</title>
 </head>
 <body>
-    <h1>MCPE Online</h1>
-
-    <!-- Adicionada pergunta sobre o servidor -->
-    <button onclick="showServerForm()">Configurar Servidor</button>
-
-    <div id="serverForm">
-        <label for="serverName">Nome do Servidor:</label>
-        <input type="text" id="serverName">
-
-        <label for="serverIP">IP:</label>
-        <input type="text" id="serverIP">
-
-        <label for="port">Porta:</label>
-        <input type="text" id="port">
-
-        <label for="version">Versão:</label>
-        <input type="text" id="version">
-
-        <button onclick="addServer()">OK</button>
-    </div>
-
-    <div id="serverList">
-        <!-- Aqui serão exibidas as informações dos servidores -->
-    </div>
-
-    <script>
-        function showServerForm() {
-            // Aqui você deve obter o Nick do usuário do MySQL
-            const playerNick = prompt("Digite seu Nick:");
-
-            // Verifica se o Nick foi preenchido
-            if (playerNick.trim() === '') {
-                alert('Por favor, preencha seu Nick antes de configurar o servidor.');
-                return;
-            }
-
-            // Oculta o botão de configuração e exibe o formulário de configuração do servidor
-            document.getElementById('serverForm').style.display = 'flex';
-        }
-
-        function addServer() {
-            const serverName = document.getElementById('serverName').value;
-            const serverIP = document.getElementById('serverIP').value;
-            const port = document.getElementById('port').value;
-            const version = document.getElementById('version').value;
-
-            // Aqui você deve obter o Nick do usuário do MySQL
-            const playerNick = prompt("Digite seu Nick:");
-
-            // Verifica se o Nick foi preenchido
-            if (playerNick.trim() === '') {
-                alert('Por favor, preencha seu Nick antes de adicionar o servidor.');
-                return;
-            }
-
-            // Adiciona as informações do servidor à lista
-            const serverList = document.getElementById('serverList');
-            const serverInfo = document.createElement('div');
-            serverInfo.innerHTML = `<strong>${playerNick}</strong><br>Nome do Servidor: ${serverName}<br>IP: ${serverIP}<br>Porta: ${port}<br>Versão: ${version}<hr>`;
-            serverList.appendChild(serverInfo);
-
-            // Limpa os campos do formulário
-            document.getElementById('serverName').value = '';
-            document.getElementById('serverIP').value = '';
-            document.getElementById('port').value = '';
-            document.getElementById('version').value = '';
-
-            // Esconde o formulário após adicionar o servidor
-            document.getElementById('serverForm').style.display = 'none';
-        }
-    </script>
+    <form action="login.php" method="post">
+        <label for="user">Usuário:</label>
+        <input type="text" id="user" name="user" required>
+        <label for="pass">Senha:</label>
+        <input type="password" id="pass" name="pass" required>
+        <input type="submit" value="Entrar">
+    </form>
 </body>
 </html>
