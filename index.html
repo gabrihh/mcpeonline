@@ -1,12 +1,61 @@
 <html>
 <head>
-    <title>Registro do Minecraft</title>
+    <title>Formulário de Nick do Minecraft</title>
 </head>
 <body>
-    <form action="salvarRegistro.php" method="post">
-        <p>Digite seu nick do minecraft:</p>
-        <input type="text" name="nick" required>
-        <input type="submit" value="Salvar">
+    <h1>Formulário de Nick do Minecraft</h1>
+    <p>Digite o seu nick do minecraft e clique em enviar.</p>
+    <form method="post" action="index.html">
+        <label for="nick">Nick:</label>
+        <input type="text" id="nick" name="nick" required>
+        <input type="submit" value="Enviar">
     </form>
+    <script>
+        // Função para criar um cookie com o nick do usuário
+        function criarCookie(nome, valor, dias) {
+            var expira = "";
+            if (dias) {
+                var data = new Date();
+                data.setTime(data.getTime() + (dias*24*60*60*1000));
+                expira = "; expires=" + data.toUTCString();
+            }
+            document.cookie = nome + "=" + valor + expira + "; path=/";
+        }
+
+        // Função para ler um cookie com o nome especificado
+        function lerCookie(nome) {
+            var nomeEQ = nome + "=";
+            var cookies = document.cookie.split(';');
+            for(var i=0;i < cookies.length;i++) {
+                var c = cookies[i];
+                while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                if (c.indexOf(nomeEQ) == 0) return c.substring(nomeEQ.length,c.length);
+            }
+            return null;
+        }
+
+        // Função para mostrar o nick do usuário na tela
+        function mostrarNick() {
+            var nick = lerCookie("nick");
+            if (nick) {
+                var div = document.createElement("div");
+                div.innerHTML = "Olá, " + nick + "!";
+                document.body.appendChild(div);
+            }
+        }
+
+        // Verificar se o formulário foi enviado
+        if (window.location.search.indexOf("nick=") != -1) {
+            // Pegar o valor do nick do formulário
+            var nick = window.location.search.split("nick=")[1];
+            // Criar um cookie com o nick do usuário por 30 dias
+            criarCookie("nick", nick, 30);
+            // Redirecionar para a mesma página sem o parâmetro
+            window.location.href = "index.html";
+        } else {
+            // Mostrar o nick do usuário na tela
+            mostrarNick();
+        }
+    </script>
 </body>
 </html>
