@@ -1,31 +1,41 @@
 <?php
+// Dados do banco de dados
 $servername = "sql10.freemysqlhosting.net";
 $username = "sql10681148";
 $password = "1sBtDA33sb";
 $dbname = "sql10681148";
 
-// Cria a conexão
+// Conecta ao banco de dados
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Verifica a conexão
+// Verifica se a conexão foi bem sucedida
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
 
-// Obtém o Nick do usuário a partir do MySQL
-function getNickFromMySQL() {
-    global $conn;
+// Obtém os dados do formulário
+$user = $_POST["user"];
+$pass = $_POST["pass"];
 
-    $sql = "SELECT nick FROM usuarios WHERE id = 1"; // Substitua '1' pelo identificador correto do usuário
+// Prepara a consulta sql
+$sql = "SELECT * FROM users WHERE user = ? AND pass = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ss", $user, $pass);
+$stmt->execute();
 
-    $result = $conn->query($sql);
+// Obtém o resultado da consulta
+$result = $stmt->get_result();
 
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        return $row["nick"];
-    } else {
-        return "Nick Não Encontrado";
-    }
+// Verifica se o usuário existe e a senha está correta
+if ($result->num_rows > 0) {
+    // Inicia a sessão do usuário
+    session_start();
+    $_SESSION["user"] = $user;
+    // Redireciona para a página inicial
+    header("Location: index.php");
+} else {
+    // Mostra uma mensagem de erro
+    echo "Usuário ou senha inválidos.";
 }
 
 // Fecha a conexão
