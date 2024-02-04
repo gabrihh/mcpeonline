@@ -1,31 +1,16 @@
 <html>
 <head>
     <script>
-        function enviarNick() {
-            // pegar o valor do input
+        function getNick() {
             var nick = document.getElementById("nick").value;
-            // criar um objeto XMLHttpRequest
-            var xhr = new XMLHttpRequest();
-            // definir o método, a URL e o modo assíncrono da requisição
-            xhr.open("POST", "carregar.php", true);
-            // definir o tipo de conteúdo da requisição
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            // enviar o nick como um parâmetro
-            xhr.send("nick=" + nick);
-            // definir uma função para tratar a resposta do servidor
-            xhr.onreadystatechange = function() {
-                // se a requisição foi concluída com sucesso
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    // mostrar uma mensagem de confirmação
-                    alert("Nick enviado com sucesso!");
-                }
-            };
+            document.getElementById("result").innerHTML = "O seu nick do minecraft é: " + nick;
         }
     </script>
 </head>
 <body>
-    <h1>Qual é o seu nick do Minecraft?</h1>
+    <h1>Qual é o seu nick do minecraft?</h1>
     <input type="text" id="nick" placeholder="Digite aqui">
-    <button onclick="enviarNick()">Enviar</button>
+    <button onclick="getNick()">Enviar</button>
+    <p id="result"></p>
 </body>
 </html>
