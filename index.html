@@ -4,21 +4,22 @@
         function enviarNick() {
             // pegar o valor do input
             var nick = document.getElementById("nick").value;
-            // criar um objeto com o nick
-            var usuario = { "nick": nick };
-            // converter o objeto em uma string JSON
-            var json = JSON.stringify(usuario);
-            // criar um elemento de link invisível
-            var link = document.createElement("a");
-            link.setAttribute("href", "data:text/json;charset=utf-8," + encodeURIComponent(json));
-            link.setAttribute("download", "usuarios.json");
-            link.style.display = "none";
-            // adicionar o link ao documento
-            document.body.appendChild(link);
-            // clicar no link para baixar o arquivo
-            link.click();
-            // remover o link do documento
-            document.body.removeChild(link);
+            // criar um objeto XMLHttpRequest
+            var xhr = new XMLHttpRequest();
+            // definir o método, a URL e o modo assíncrono da requisição
+            xhr.open("POST", "atualizar_usuarios.php", true);
+            // definir o tipo de conteúdo da requisição
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            // enviar o nick como um parâmetro
+            xhr.send("nick=" + nick);
+            // definir uma função para tratar a resposta do servidor
+            xhr.onreadystatechange = function() {
+                // se a requisição foi concluída com sucesso
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // mostrar uma mensagem de confirmação
+                    alert("Nick enviado com sucesso!");
+                }
+            };
         }
     </script>
 </head>
