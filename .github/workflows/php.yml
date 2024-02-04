@@ -17,6 +17,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    # Adicione esta etapa para configurar o PHP
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4' # Escolha a versão do PHP que você precisa
+        extensions: mbstring, xdebug # Adicione as extensões que você precisa
+
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
 
