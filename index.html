@@ -1,15 +1,30 @@
-<!-- index.html -->
 <html>
 <head>
-    <title>Formulário de Nick do Minecraft</title>
+    <script>
+        function enviarNick() {
+            // pegar o valor do input
+            var nick = document.getElementById("nick").value;
+            // criar um objeto com o nick
+            var usuario = { "nick": nick };
+            // converter o objeto em uma string JSON
+            var json = JSON.stringify(usuario);
+            // criar um elemento de link invisível
+            var link = document.createElement("a");
+            link.setAttribute("href", "data:text/json;charset=utf-8," + encodeURIComponent(json));
+            link.setAttribute("download", "usuarios.json");
+            link.style.display = "none";
+            // adicionar o link ao documento
+            document.body.appendChild(link);
+            // clicar no link para baixar o arquivo
+            link.click();
+            // remover o link do documento
+            document.body.removeChild(link);
+        }
+    </script>
 </head>
 <body>
-    <h1>Formulário de Nick do Minecraft</h1>
-    <p>Digite o seu nick do minecraft e clique em enviar.</p>
-    <form method="post" action="salvar_nick.php">
-        <label for="nick">Nick:</label>
-        <input type="text" id="nick" name="nick" required>
-        <input type="submit" value="Enviar">
-    </form>
+    <h1>Qual é o seu nick do Minecraft?</h1>
+    <input type="text" id="nick" placeholder="Digite aqui">
+    <button onclick="enviarNick()">Enviar</button>
 </body>
 </html>
