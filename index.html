@@ -1,16 +1,145 @@
 <html>
 <head>
-    <script>
-        function getNick() {
-            var nick = document.getElementById("nick").value;
-            document.getElementById("result").innerHTML = "O seu nick do minecraft é: " + nick;
-        }
-    </script>
+  <!-- Import the Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js"></script>
+
+  <!-- Initialize Firebase with your configuration -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAsohuCEUHRtRCPMwJ5-Bm-6fIp9Xl1qf8",
+      authDomain: "mcpeonline-415a6.firebaseapp.com",
+      projectId: "mcpeonline-415a6",
+      storageBucket: "mcpeonline-415a6.appspot.com",
+      messagingSenderId: "603094169486",
+      appId: "1:603094169486:web:0c2efe5d4bf265832e56df",
+      measurementId: "G-CV5XS40XBE"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth(app);
+    const analytics = firebase.analytics(app);
+  </script>
 </head>
 <body>
-    <h1>Qual é o seu nick do minecraft?</h1>
-    <input type="text" id="nick" placeholder="Digite aqui">
-    <button onclick="getNick()">Enviar</button>
-    <p id="result"></p>
+  <!-- Create a form for registration -->
+  <h1>Registro</h1>
+  <form id="register-form">
+    <label for="register-email">Email:</label>
+    <input type="email" id="register-email" required>
+    <label for="register-password">Senha:</label>
+    <input type="password" id="register-password" required>
+    <button type="submit">Registrar</button>
+  </form>
+  <p id="register-message"></p>
+
+  <!-- Create a form for login -->
+  <h1>Login</h1>
+  <form id="login-form">
+    <label for="login-email">Email:</label>
+    <input type="email" id="login-email" required>
+    <label for="login-password">Senha:</label>
+    <input type="password" id="login-password" required>
+    <button type="submit">Entrar</button>
+  </form>
+  <p id="login-message"></p>
+
+  <!-- Create a button for logout -->
+  <h1>Logout</h1>
+  <button id="logout-button">Sair</button>
+  <p id="logout-message"></p>
+
+  <!-- Add some logic for the forms and the button -->
+  <script>
+    // Get the elements from the document
+    const registerForm = document.getElementById("register-form");
+    const registerEmail = document.getElementById("register-email");
+    const registerPassword = document.getElementById("register-password");
+    const registerMessage = document.getElementById("register-message");
+    const loginForm = document.getElementById("login-form");
+    const loginEmail = document.getElementById("login-email");
+    const loginPassword = document.getElementById("login-password");
+    const loginMessage = document.getElementById("login-message");
+    const logoutButton = document.getElementById("logout-button");
+    const logoutMessage = document.getElementById("logout-message");
+
+    // Add an event listener for the register form
+    registerForm.addEventListener("submit", (e) => {
+      // Prevent the default behavior of the form
+      e.preventDefault();
+      // Get the email and password from the input fields
+      const email = registerEmail.value;
+      const password = registerPassword.value;
+      // Create a new user with the email and password
+      auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          // The user was created successfully
+          const user = userCredential.user;
+          // Show a success message
+          registerMessage.textContent = "Usuário registrado com sucesso: " + user.email;
+          // Clear the input fields
+          registerEmail.value = "";
+          registerPassword.value = "";
+          // Log an event to Firebase Analytics
+          analytics.logEvent("sign_up", {method: "email"});
+        })
+        .catch((error) => {
+          // There was an error creating the user
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // Show an error message
+          registerMessage.textContent = "Erro ao registrar o usuário: " + errorCode + " - " + errorMessage;
+        });
+    });
+
+    // Add an event listener for the login form
+    loginForm.addEventListener("submit", (e) => {
+      // Prevent the default behavior of the form
+      e.preventDefault();
+      // Get the email and password from the input fields
+      const email = loginEmail.value;
+      const password = loginPassword.value;
+      // Sign in the user with the email and password
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          // The user was signed in successfully
+          const user = userCredential.user;
+          // Show a success message
+          loginMessage.textContent = "Usuário logado com sucesso: " + user.email;
+          // Clear the input fields
+          loginEmail.value = "";
+          loginPassword.value = "";
+          // Log an event to Firebase Analytics
+          analytics.logEvent("login", {method: "email"});
+        })
+        .catch((error) => {
+          // There was an error signing in the user
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // Show an error message
+          loginMessage.textContent = "Erro ao logar o usuário: " + errorCode + " - " + errorMessage;
+        });
+    });
+
+    // Add an event listener for the logout button
+    logoutButton.addEventListener("click", (e) => {
+      // Sign out the current user
+      auth.signOut()
+        .then(() => {
+          // The user was signed out successfully
+          // Show a success message
+          logoutMessage.textContent = "Usuário saiu com sucesso";
+        })
+        .catch((error) => {
+          // There was an error signing out the user
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // Show an error message
+          logoutMessage.textContent = "Erro ao sair o usuário: " + errorCode + " - " + errorMessage;
+        });
+    });
+  </script>
 </body>
 </html>
